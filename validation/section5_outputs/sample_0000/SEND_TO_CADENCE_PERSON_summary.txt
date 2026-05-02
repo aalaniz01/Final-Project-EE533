@@ -1,0 +1,29 @@
+EE 533 Task 5 PWLF Export Summary
+=================================
+
+Selected hidden-layer neuron indices:
+0, 1, 126, 3
+
+PWLF file mapping:
+neuron_0_pwlf.txt -> hidden neuron 0
+neuron_1_pwlf.txt -> hidden neuron 1
+neuron_2_pwlf.txt -> hidden neuron 126
+neuron_3_pwlf.txt -> hidden neuron 3
+
+MNIST test image used:
+test image index 0, digit label 7
+
+Python reference spike times, by PWLF file neuron, in seconds:
+Neuron 0 spikes at: 0.002000s, 0.004000s, 0.006000s, 0.008000s, 0.010000s
+Neuron 1 spikes at: 0.002000s, 0.004000s, 0.006000s, 0.008000s, 0.010000s
+Neuron 2 spikes at: 0.002000s, 0.004000s, 0.006000s, 0.008000s, 0.010000s
+Neuron 3 spikes at: 0.002000s, 0.004000s, 0.006000s, 0.008000s, 0.010000s
+
+Python reference spike times, by original hidden-layer index, in seconds:
+Hidden neuron 0 spikes at: 0.002000s, 0.004000s, 0.006000s, 0.008000s, 0.010000s
+Hidden neuron 1 spikes at: 0.002000s, 0.004000s, 0.006000s, 0.008000s, 0.010000s
+Hidden neuron 126 spikes at: 0.002000s, 0.004000s, 0.006000s, 0.008000s, 0.010000s
+Hidden neuron 3 spikes at: 0.002000s, 0.004000s, 0.006000s, 0.008000s, 0.010000s
+
+Total simulation time window:
+0.010000 seconds (10.000 ms)
