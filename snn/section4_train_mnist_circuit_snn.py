@@ -112,8 +112,18 @@ class CircuitInformedMNISTSNN(nn.Module):
 
         This keeps the Python SNN aligned with the Task 2 assumption:
             normalized input 1.0 -> I_max_nA
+
+        FIX: sigmoid replaces clamp(relu(x), 0, 1).
+        clamp has zero gradient wherever |x| > 1 (which is most of the
+        hidden layer after fc1 with Xavier init + sparse Bernoulli input),
+        and relu zeroes the negative half as well — together they killed
+        gradient flow to almost all neurons, causing all hidden-layer
+        weights to stay identical and producing the same output for every
+        neuron in Section 5.
+        sigmoid maps ℝ → (0, 1) with non-zero gradient everywhere, so
+        every neuron receives a useful update on every step.
         """
-        return torch.clamp(F.relu(x), 0.0, 1.0)
+        return torch.sigmoid(x)
 
     @staticmethod
     def _poisson_encode(x: torch.Tensor) -> torch.Tensor:
@@ -330,6 +340,21 @@ def train(args: argparse.Namespace) -> None:
 
         test_loss, test_acc = evaluate(model, test_loader, device)
 
+        # FIX: save checkpoint BEFORE updating best_test_acc.
+        # Previously best_test_acc was updated first, making
+        # `test_acc >= best_test_acc` always True and saving every epoch
+        # instead of only the genuinely best checkpoint.
+        model_path = output_dir / "section4_circuit_snn_best.pt"
+        if test_acc >= best_test_acc:
+            torch.save(
+                {
+                    "model_state_dict": model.state_dict(),
+                    "args": vars(args),
+                    "test_accuracy": test_acc,
+                },
+                model_path,
+            )
+
         best_test_acc = max(best_test_acc, test_acc)
 
         row = {
@@ -358,17 +383,6 @@ def train(args: argparse.Namespace) -> None:
             writer = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
             writer.writeheader()
             writer.writerows(rows)
-
-        model_path = output_dir / "section4_circuit_snn_best.pt"
-        if test_acc >= best_test_acc:
-            torch.save(
-                {
-                    "model_state_dict": model.state_dict(),
-                    "args": vars(args),
-                    "test_accuracy": test_acc,
-                },
-                model_path,
-            )
 
     # Save a simple plot after training.
     try:

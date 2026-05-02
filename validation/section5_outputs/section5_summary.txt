@@ -1,0 +1,37 @@
+============================================================
+EE 533  Section 5 — Weight Extraction Summary
+============================================================
+
+Trained model info:
+  Checkpoint test accuracy : 0.9155
+  Hidden size              : 128
+  Input resolution         : 28
+  Time steps               : 10
+  dt                       : 1.0 ms
+  I_max                    : 100.0 nA
+
+Selected neurons (4 most active):
+  1. neuron index 104
+  2. neuron index 48
+  3. neuron index 117
+  4. neuron index 127
+
+PWLF waveform parameters:
+  Simulation time per image: 10.0 ms  (10 x 1.0 ms)
+  Current range            : 0 - 100.0 nA
+  Number of test images    : 10
+
+Files written:
+  section5_neuron_weights.pt
+  section5_neuron_weights.csv
+  section5_weight_health.png
+  section5_pwlf_preview.png
+  section5_neuron<N>_image<M>_label<L>_pwlf.csv  x 40 files
+
+Next step -> Cadence:
+  1. Open each *_pwlf.csv and use time_s / current_A columns.
+  2. Create a PWLF current source for each of the 4 neuron instances.
+  3. Run transient for 10.0 ms.
+  4. Export /vout for each neuron.
+  5. Use section3 compare_spikes() to compute timing agreement.
+============================================================

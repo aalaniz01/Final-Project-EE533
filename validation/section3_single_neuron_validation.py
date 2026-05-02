@@ -271,8 +271,44 @@ def main() -> None:
     cadence_const = extract_spike_times(t_const, v_const, threshold_V=args.vout_threshold)
     cadence_pulse = extract_spike_times(t_pulse, v_pulse, threshold_V=args.vout_threshold)
 
+    # FIX: guard against empty spike arrays before any indexing.
+    # If no spikes are found, the most likely causes are: wrong --vout_threshold,
+    # wrong CSV column order, or the simulation time being too short.
+    if len(cadence_const) == 0:
+        raise RuntimeError(
+            "No spikes detected in the constant-current Cadence CSV.\n"
+            f"  File      : {args.const_csv}\n"
+            f"  Threshold : {args.vout_threshold} V\n"
+            "Check that the CSV contains a vout column that actually crosses "
+            "the threshold, or lower --vout_threshold."
+        )
+    if len(cadence_pulse) == 0:
+        raise RuntimeError(
+            "No spikes detected in the pulsed Cadence CSV.\n"
+            f"  File      : {args.pulse_csv}\n"
+            f"  Threshold : {args.vout_threshold} V\n"
+            "Check that the CSV contains a vout column that actually crosses "
+            "the threshold, or lower --vout_threshold."
+        )
+
     tstop_s = max(float(t_const[-1]), float(t_pulse[-1]))
     params = fit_fi_curve(args.fi_csv)
+
+    # FIX: warn if i_offset_nA has the wrong sign.
+    # For a standard IF neuron the f-I intercept should be negative
+    # (threshold current needed to fire), making i_offset_nA negative.
+    # A positive i_offset_nA would artificially inflate the effective
+    # current and make Python fire faster than Cadence.
+    if params.i_offset_nA > 0:
+        import warnings
+        warnings.warn(
+            f"i_offset_nA = {params.i_offset_nA:.4f} nA is positive. "
+            "This means your f-I linear fit has a positive intercept, which "
+            "will make the Python model fire faster than Cadence. "
+            "Check your fi_curve.csv data and the fit in fit_fi_curve().",
+            UserWarning,
+            stacklevel=2,
+        )
 
     # Use the first constant-current spike to estimate the Cadence initial condition.
     # This avoids unfairly penalizing Python for the simulator's nonzero startup state.
