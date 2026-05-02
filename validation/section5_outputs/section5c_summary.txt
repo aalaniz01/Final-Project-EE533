@@ -1,0 +1,29 @@
+==============================================================
+EE 533  Section 5c - Spike Timing and Temporal Alignment
+==============================================================
+Test image label : 1
+Simulation window: 10.0 ms
+
+Neuron       Cad    Py    MAE(ms)   RMSE(ms)   MaxErr(ms)   RateErr%   Align%
+--------------------------------------------------------------
+104            9     5      2.574      2.908        4.478      44.44    100.0
+48             9     5      2.360      2.671        4.155      44.44    100.0
+117            9     5      2.574      2.908        4.478      44.44    100.0
+127            9     5      2.518      2.844        4.379      44.44    100.0
+--------------------------------------------------------------
+
+Column legend:
+  Cad        = number of spikes detected in Cadence
+  Py         = number of spikes in Python SNN
+  MAE(ms)    = mean absolute spike time error
+  RMSE(ms)   = root mean square spike time error
+  MaxErr(ms) = worst-case spike time error
+  RateErr%   = firing rate disagreement percentage
+  Align%     = fraction of Python spikes within 1 ms of a Cadence spike
+
+Files produced:
+  section5c_metrics.csv
+  section5c_raster.png
+  section5c_spike_agreement.png
+  section5c_voltage_traces.png
+==============================================================

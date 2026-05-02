@@ -1,0 +1,5 @@
+neuron_index,cadence_spikes,python_spikes,matched_spikes,spike_time_MAE_ms,spike_time_RMSE_ms,spike_time_max_err_ms,cadence_rate_Hz,python_rate_Hz,rate_error_pct,temporal_alignment_pct
+104,9,5,5,2.5742,2.9079,4.4778,900.0,500.0,44.44,100.0
+48,9,5,5,2.3599,2.6707,4.1549,900.0,500.0,44.44,100.0
+117,9,5,5,2.5742,2.9079,4.4778,900.0,500.0,44.44,100.0
+127,9,5,5,2.5183,2.8442,4.3788,900.0,500.0,44.44,100.0
