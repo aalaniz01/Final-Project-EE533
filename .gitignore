@@ -1,0 +1,11 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# MNIST data (too large for GitHub)
+data/
+
+# Large output files
+validation/section5_outputs/section5_neuron*_pwlf.csv
+validation/section4_outputs/section4_circuit_snn_best.pt
