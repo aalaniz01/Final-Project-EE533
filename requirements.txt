@@ -9,4 +9,4 @@ torch>=2.0
 torchvision>=0.15
 
 # Spiking neural network framework
-spikingjelly>=0.0.0.0.14
+spikingjelly>=0.0.0.0.14 
